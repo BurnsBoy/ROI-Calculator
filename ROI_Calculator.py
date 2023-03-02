@@ -87,53 +87,38 @@ class ROICalculator():
         return self.roi
     
 roi_calculator = ROICalculator()
-while True:
-    try:
-        action = int(input("=====ROI Calculator=====\n[1]Update Income\n[2]Update Expenses\n[3]Update Investments\n[4]Show Info\n"))
+income_types = ["Rental","Laundry","Storage","Other Income"]
+expense_types = ["Tax","Insurance","Electric","Water","Sewer","Garbage","Gas","HOA Fees","Lawn/Snow","Vacancy Fund",\
+                 "Average Repairs","CapEx","Property Management","Mortgage","Other"]
+investment_types = ["Down Payment","Closing Costs", "Rehab Budget", "Other Investments"]
 
-        # Update
-        if action > 0 and action < 4:
-            while True:
-                if action == 1:
-                    list_name = "Monthly Income"
-                    roi_calculator.printIncomes()
-                if action == 2:
-                    list_name = "Monthly Expense"
-                    roi_calculator.printExpenses()
-                if action == 3:
-                    list_name = "Initial Investment"
-                    roi_calculator.printInvestments()              
-                update = input(f"\nUpdate {list_name} List? Y/N ")
-                if update.upper() == 'Y':
-                    type = input(f"\nInput {list_name} Type ")
-                    try:
-                        amount = float(input(f"Input {type.title()} Amount $"))
-                        if action == 1:
-                            roi_calculator.addIncome(type.title(), amount)
-                        if action == 2:
-                            roi_calculator.addExpense(type.title(), amount)
-                        if action == 3:
-                            roi_calculator.addInvestment(type.title(), amount)
-                    except:
-                        print("Invalid Input!")
-                else:
-                    break
-        
-        # Show Info
-        elif action == 4:
-            roi_calculator.printAll()
-            print('')
-            print(f"Monthly Cash flow: ${roi_calculator.calculateCashFlow()}")
-            print(f"Return On Investing: {roi_calculator.calculateROI()}%")
-            print('')
-            finished = input("Finished? Y/N ")
-            if finished.upper() == 'Y':
-                break
+print("INCOME SOURCES:")
+for income in income_types:
+    while True:
+        try:
+            roi_calculator.addIncome(income, float(input(f"Enter {income} Income: $")))
+            break
+        except:
+            print('Enter Valid Amount!')
 
-        else:
-            print("Please input valid response")
+print("\nMONTHLY EXPENSES:")
+for expense in expense_types:
+    while True:
+        try:
+            roi_calculator.addExpense(expense, float(input(f"Enter {expense} Expense: $")))
+            break
+        except:
+            print('Enter Valid Amount!')
+print("\nINITIAL INVESTMENTS:")
+for investment in investment_types:
+    while True:
+        try:
+            roi_calculator.addInvestment(investment, float(input(f"Enter {investment} Amount: $")))
+            break
+        except:
+            print('Enter Valid Amount!')
 
-    except:
-        print("Please input valid response")
-        
-
+roi_calculator.printAll()
+print('')
+print(f"Monthly Cash flow: ${roi_calculator.calculateCashFlow()}")
+print(f"Return On Investing: {roi_calculator.calculateROI()}%")
